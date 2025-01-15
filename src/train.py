@@ -5,13 +5,11 @@ from stable_baselines3 import PPO
 from stable_baselines3.common.vec_env import DummyVecEnv
 
 def main():
-    # Create models directory if it doesn't exist
     os.makedirs('models', exist_ok=True)
     
     with open('config/config.yaml', 'r') as f:
         config = yaml.safe_load(f)
     
-    # Create and wrap the environment
     env = DummyVecEnv([lambda: MortalKombatEnv()])
     
     model = PPO(
