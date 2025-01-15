@@ -11,13 +11,10 @@ class MortalKombatEnv(gym.Env):
         self.viewer = None
         pygame.init()
         
-        # Get the buttons from retro environment
         buttons = ["B", "A", "MODE", "START", "UP", "DOWN", "LEFT", "RIGHT", "C", "Y", "X", "Z"]
         
-        # Create a binary action space for each button
         self.action_space = spaces.MultiBinary(len(buttons))
         
-        # Define observation space
         self.observation_space = spaces.Box(
             low=0, high=255, shape=(84, 84, 1), dtype=np.uint8
         )
@@ -32,7 +29,6 @@ class MortalKombatEnv(gym.Env):
         return np.expand_dims(resized, axis=-1)
     
     def step(self, action):
-        # Convert action to numpy array if it isn't already
         action = np.array(action, dtype=np.int8)
         
         obs, reward, done, info = self.env.step(action)
@@ -59,7 +55,6 @@ class MortalKombatEnv(gym.Env):
         self.previous_health = current_health
         self.previous_enemy_health = enemy_health
         
-        # Convert to gymnasium format
         return processed_obs, reward, done, False, info
     
     def render(self):
@@ -69,19 +64,15 @@ class MortalKombatEnv(gym.Env):
             self.screen = pygame.display.set_mode((screen_width, screen_height))
             pygame.display.set_caption('Mortal Kombat')
 
-        # Get the game screen
         game_screen = self.env.get_screen()
         
-        # Convert to pygame surface
         game_surface = pygame.surfarray.make_surface(
             np.transpose(game_screen, (1, 0, 2))
         )
         
-        # Display the game
         self.screen.blit(game_surface, (0, 0))
         pygame.display.flip()
 
-        # Handle pygame events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.close()
